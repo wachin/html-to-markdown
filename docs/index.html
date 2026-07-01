@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HTML to Markdown, Reframed</title>
+  <meta name="description" content="A GitHub Pages showcase for html-to-markdown with a distinct visual direction and interactive examples.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Go to top">
+        <span class="brand-mark">&lt;/&gt;</span>
+        <span class="brand-copy">
+          <strong>html2md</strong>
+          <span>reframed for GitHub Pages</span>
+        </span>
+      </a>
+      <nav class="site-nav">
+        <a href="#demo">Demo</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#notes">Notes</a>
+        <a href="https://github.com/wachin/html-to-markdown" target="_blank" rel="noopener">Fork</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Static project showcase</p>
+          <h1>HTML in, Markdown out, without mirroring the original site.</h1>
+          <p class="lede">
+            This page presents the project with a different visual system: warm paper tones,
+            dark ink panels, and a compact example-driven layout suited for GitHub Pages.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#demo">Try the examples</a>
+            <a class="button ghost" href="https://github.com/wachin/html-to-markdown/blob/main/README.md" target="_blank" rel="noopener">Read the README</a>
+          </div>
+          <ul class="hero-points">
+            <li>Focused on code examples instead of a hosted API form.</li>
+            <li>Distinct palette and composition, not a copy of html-to-markdown.com.</li>
+            <li>Ready to publish directly from <code>docs/</code> in GitHub Pages.</li>
+          </ul>
+        </div>
+        <aside class="hero-card">
+          <p class="card-label">Why this version exists</p>
+          <h2>Project microsite</h2>
+          <p>
+            The original public site is not part of this repository. This page gives your fork
+            its own front door while staying honest about what is hosted here.
+          </p>
+          <dl class="mini-stats">
+            <div>
+              <dt>Source</dt>
+              <dd>GitHub Pages</dd>
+            </div>
+            <div>
+              <dt>Stack</dt>
+              <dd>Plain HTML, CSS, JS</dd>
+            </div>
+            <div>
+              <dt>Intent</dt>
+              <dd>Showcase, not clone</dd>
+            </div>
+          </dl>
+        </aside>
+      </section>
+
+      <section id="demo" class="demo-section">
+        <div class="section-heading">
+          <p class="eyebrow">Interactive sample wall</p>
+          <h2>Switch between conversion examples</h2>
+          <p>
+            This is a static demonstration. The presets below swap curated HTML and Markdown pairs
+            so visitors can understand the converter behavior quickly.
+          </p>
+        </div>
+
+        <div class="preset-bar" id="preset-bar">
+          <button type="button" class="preset is-active" data-preset="basic">Basic Text</button>
+          <button type="button" class="preset" data-preset="lists">Lists</button>
+          <button type="button" class="preset" data-preset="table">Tables</button>
+          <button type="button" class="preset" data-preset="blogger">Blogger Images</button>
+          <button type="button" class="preset" data-preset="code">Code Blocks</button>
+        </div>
+
+        <div class="workspace">
+          <article class="panel panel-input">
+            <div class="panel-head">
+              <h3>HTML Input</h3>
+              <button type="button" class="mini-button" id="copy-html">Copy</button>
+            </div>
+            <textarea id="html-view" spellcheck="false" aria-label="HTML example"></textarea>
+          </article>
+
+          <article class="panel panel-output">
+            <div class="panel-head">
+              <h3>Markdown Output</h3>
+              <button type="button" class="mini-button" id="copy-markdown">Copy</button>
+            </div>
+            <pre id="markdown-view"></pre>
+          </article>
+        </div>
+
+        <p id="preset-note" class="preset-note"></p>
+      </section>
+
+      <section id="workflow" class="workflow-section">
+        <div class="section-heading">
+          <p class="eyebrow">Project flow</p>
+          <h2>How this fork can present the converter</h2>
+        </div>
+        <div class="workflow-grid">
+          <article>
+            <span class="step">01</span>
+            <h3>Explore the library</h3>
+            <p>Point visitors to the Go package, CLI entrypoint, and plugin architecture instead of pretending this fork hosts the production service.</p>
+          </article>
+          <article>
+            <span class="step">02</span>
+            <h3>Show realistic cases</h3>
+            <p>Use curated examples for links, tables, escaping, and Blogger image wrappers so the behavior is concrete at first glance.</p>
+          </article>
+          <article>
+            <span class="step">03</span>
+            <h3>Bridge to the repo</h3>
+            <p>Send people to the README, tests, and source files where the actual implementation lives.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="notes" class="notes-section">
+        <article class="note-card">
+          <h2>Included in this page</h2>
+          <ul>
+            <li>A different color system based on sand, rust, pine, and ink.</li>
+            <li>A denser editorial layout rather than the original SaaS landing page structure.</li>
+            <li>A Blogger example aligned with the conversion support you just added.</li>
+          </ul>
+        </article>
+        <article class="note-card accent">
+          <h2>Not included on purpose</h2>
+          <ul>
+            <li>No copied branding, hosted API form, or original layout reproduction.</li>
+            <li>No claim that this fork is the upstream production website.</li>
+            <li>No dependency on a framework or build pipeline for publishing.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Built for the <code>wachin/html-to-markdown</code> fork.</p>
+      <p>
+        Publish from <code>main</code> + <code>/docs</code> in GitHub Pages.
+      </p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
