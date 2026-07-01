@@ -26,6 +26,8 @@ Here are some _cool features_:
 
   ![](./.github/images/point_link_image.png)
 
+- **Blogger HTML:** Flattens Blogger image wrappers like `<a><img></a>` into plain Markdown images by default.
+
 - **Smart Escaping:** Escapes special characters only when necessary, to avoid accidental Markdown rendering.
   🗒️ [ESCAPING.md](/ESCAPING.md)
 

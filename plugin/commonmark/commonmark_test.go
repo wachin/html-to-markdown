@@ -2,6 +2,9 @@ package commonmark_test
 
 import (
 	"bytes"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	htmltomarkdown "github.com/JohannesKaufmann/html-to-markdown/v2"
@@ -189,6 +192,14 @@ func TestOptionFunc(t *testing.T) {
 			input:    `<a href="/page"></a>`,
 			expected: "",
 		},
+		{
+			desc: "WithBloggerImageSupport(false)",
+			options: []commonmark.OptionFunc{
+				commonmark.WithBloggerImageSupport(false),
+			},
+			input:    `<a href="https://blogger.googleusercontent.com/img/a/example"><img src="https://blogger.googleusercontent.com/img/a/example=s16000" /></a>`,
+			expected: `[![](https://blogger.googleusercontent.com/img/a/example=s16000)](https://blogger.googleusercontent.com/img/a/example)`,
+		},
 
 		// TODO: handle other link styles
 		// {
@@ -220,6 +231,56 @@ func TestOptionFunc(t *testing.T) {
 				t.Errorf("expected %q but got %q", tC.expected, output)
 			}
 		})
+	}
+}
+
+func TestBloggerImageSupport_DefaultEnabled(t *testing.T) {
+	input := `<a href="https://blogger.googleusercontent.com/img/a/example"><img src="https://blogger.googleusercontent.com/img/a/example=s16000" /></a>`
+
+	output, err := htmltomarkdown.ConvertString(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := `![](https://blogger.googleusercontent.com/img/a/example=s16000)`
+	if output != expected {
+		t.Fatalf("expected %q but got %q", expected, output)
+	}
+}
+
+func TestBloggerImageSupport_PromptExample(t *testing.T) {
+	input := `<a href="https://blogger.googleusercontent.com/img/a/AVvXsEgAVLxrIo88uOQOiWrIflynvHe-Bnq1qpPhUgPT4R5WZxGaemKT0-rMzGwXJAlov6e8JbUEC4GURpwdZTb25uv7iuZrD8KQVXafQK2mlJJ0H_zAy8p2Tb8_Tca39_eGVWK98pFHM5iQgbAiMXyPmsj5LdiMJmQNdqYbzE2E67l7aoXM8TviN3A0vmWQ"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgAVLxrIo88uOQOiWrIflynvHe-Bnq1qpPhUgPT4R5WZxGaemKT0-rMzGwXJAlov6e8JbUEC4GURpwdZTb25uv7iuZrD8KQVXafQK2mlJJ0H_zAy8p2Tb8_Tca39_eGVWK98pFHM5iQgbAiMXyPmsj5LdiMJmQNdqYbzE2E67l7aoXM8TviN3A0vmWQ=s16000" /></a>`
+
+	output, err := htmltomarkdown.ConvertString(input)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := `![](https://blogger.googleusercontent.com/img/a/AVvXsEgAVLxrIo88uOQOiWrIflynvHe-Bnq1qpPhUgPT4R5WZxGaemKT0-rMzGwXJAlov6e8JbUEC4GURpwdZTb25uv7iuZrD8KQVXafQK2mlJJ0H_zAy8p2Tb8_Tca39_eGVWK98pFHM5iQgbAiMXyPmsj5LdiMJmQNdqYbzE2E67l7aoXM8TviN3A0vmWQ=s16000)`
+	if output != expected {
+		t.Fatalf("expected %q but got %q", expected, output)
+	}
+}
+
+func TestBloggerSampleFile(t *testing.T) {
+	inputPath := filepath.Join("..", "..", "8vo", "Ejemplo-de-entrada-de-blogger.html")
+	input, err := os.ReadFile(inputPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	output, err := htmltomarkdown.ConvertString(string(input))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if strings.Contains(output, "[![](") {
+		t.Fatalf("expected blogger images to render without link wrappers, but found %q", "[![](")
+	}
+
+	expectedSnippet := `![](https://blogger.googleusercontent.com/img/a/AVvXsEgAVLxrIo88uOQOiWrIflynvHe-Bnq1qpPhUgPT4R5WZxGaemKT0-rMzGwXJAlov6e8JbUEC4GURpwdZTb25uv7iuZrD8KQVXafQK2mlJJ0H_zAy8p2Tb8_Tca39_eGVWK98pFHM5iQgbAiMXyPmsj5LdiMJmQNdqYbzE2E67l7aoXM8TviN3A0vmWQ=s16000)`
+	if !strings.Contains(output, expectedSnippet) {
+		t.Fatalf("expected output to contain %q", expectedSnippet)
 	}
 }
 

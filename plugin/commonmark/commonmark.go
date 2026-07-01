@@ -104,6 +104,17 @@ func WithLinkEmptyContentBehavior(behavior linkRenderingBehavior) OptionFunc {
 	}
 }
 
+// WithBloggerImageSupport configures whether Blogger image links should be
+// flattened to plain markdown images when the anchor only wraps the image.
+//
+// default: true
+func WithBloggerImageSupport(enabled bool) OptionFunc {
+	return func(config *config) {
+		config.BloggerImageSupport = enabled
+		config.bloggerImageSupportSet = true
+	}
+}
+
 // TODO: allow changing the link style once the render logic is implemented
 //
 // "inlined" or "referenced_index" or "referenced_short"

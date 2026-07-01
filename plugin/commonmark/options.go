@@ -85,6 +85,8 @@ type config struct {
 
 	LinkEmptyHrefBehavior    linkRenderingBehavior
 	LinkEmptyContentBehavior linkRenderingBehavior
+	BloggerImageSupport      bool
+	bloggerImageSupportSet   bool
 }
 
 func fillInDefaultConfig(cfg *config) config {
@@ -124,6 +126,9 @@ func fillInDefaultConfig(cfg *config) config {
 	}
 	if cfg.LinkStyle == "" {
 		cfg.LinkStyle = LinkStyleInlined
+	}
+	if !cfg.bloggerImageSupportSet {
+		cfg.BloggerImageSupport = true
 	}
 
 	return *cfg

@@ -2,6 +2,7 @@ package commonmark
 
 import (
 	"bytes"
+	"net/url"
 	"strings"
 
 	"github.com/JohannesKaufmann/dom"
@@ -44,7 +45,77 @@ func (c *commonmark) renderLinkInlined(w converter.Writer, l *link) converter.Re
 	return converter.RenderSuccess
 }
 
+func directImageChild(n *html.Node) *html.Node {
+	var image *html.Node
+
+	for child := n.FirstChild; child != nil; child = child.NextSibling {
+		switch child.Type {
+		case html.TextNode:
+			if strings.TrimSpace(child.Data) != "" {
+				return nil
+			}
+		case html.ElementNode:
+			if child.Data != "img" || image != nil {
+				return nil
+			}
+			image = child
+		}
+	}
+
+	return image
+}
+
+func normalizeBloggerImageURL(raw string) (string, bool) {
+	parsed, err := url.Parse(strings.TrimSpace(raw))
+	if err != nil {
+		return "", false
+	}
+
+	if !strings.EqualFold(parsed.Hostname(), "blogger.googleusercontent.com") {
+		return "", false
+	}
+
+	parsed.RawQuery = ""
+	parsed.Fragment = ""
+
+	lastSlash := strings.LastIndex(parsed.Path, "/")
+	if lastSlash >= 0 {
+		lastSegment := parsed.Path[lastSlash+1:]
+		if suffixStart := strings.Index(lastSegment, "="); suffixStart >= 0 {
+			parsed.Path = parsed.Path[:lastSlash+1] + lastSegment[:suffixStart]
+		}
+	}
+
+	return parsed.String(), true
+}
+
+func (c *commonmark) shouldRenderBloggerImageOnly(n *html.Node) bool {
+	if !c.config.BloggerImageSupport {
+		return false
+	}
+
+	image := directImageChild(n)
+	if image == nil {
+		return false
+	}
+
+	href := dom.GetAttributeOr(n, "href", "")
+	src := dom.GetAttributeOr(image, "src", "")
+
+	normalizedHref, okHref := normalizeBloggerImageURL(href)
+	normalizedSrc, okSrc := normalizeBloggerImageURL(src)
+
+	return okHref && okSrc && normalizedHref == normalizedSrc
+}
+
 func (c *commonmark) renderLink(ctx converter.Context, w converter.Writer, n *html.Node) converter.RenderStatus {
+	if c.shouldRenderBloggerImageOnly(n) {
+		image := directImageChild(n)
+		if image != nil {
+			return c.renderImage(ctx, w, image)
+		}
+	}
+
 	ctx = ctx.WithValue("is_inside_link", true)
 
 	href := dom.GetAttributeOr(n, "href", "")
