@@ -6,6 +6,8 @@
   <title>HTML to Markdown, Reframed</title>
   <meta name="description" content="A GitHub Pages showcase for html-to-markdown with a distinct visual direction and interactive examples.">
   <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/turndown-plugin-gfm/dist/turndown-plugin-gfm.js"></script>
 </head>
 <body>
   <div class="page-shell">
@@ -26,56 +28,11 @@
     </header>
 
     <main id="top">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Static project showcase</p>
-          <h1>HTML in, Markdown out, without mirroring the original site.</h1>
-          <p class="lede">
-            This page presents the project with a different visual system: warm paper tones,
-            dark ink panels, and a compact example-driven layout suited for GitHub Pages.
-          </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#demo">Try the examples</a>
-            <a class="button ghost" href="https://github.com/wachin/html-to-markdown/blob/main/README.md" target="_blank" rel="noopener">Read the README</a>
-          </div>
-          <ul class="hero-points">
-            <li>Focused on code examples instead of a hosted API form.</li>
-            <li>Distinct palette and composition, not a copy of html-to-markdown.com.</li>
-            <li>Ready to publish directly from <code>docs/</code> in GitHub Pages.</li>
-          </ul>
-        </div>
-        <aside class="hero-card">
-          <p class="card-label">Why this version exists</p>
-          <h2>Project microsite</h2>
-          <p>
-            The original public site is not part of this repository. This page gives your fork
-            its own front door while staying honest about what is hosted here.
-          </p>
-          <dl class="mini-stats">
-            <div>
-              <dt>Source</dt>
-              <dd>GitHub Pages</dd>
-            </div>
-            <div>
-              <dt>Stack</dt>
-              <dd>Plain HTML, CSS, JS</dd>
-            </div>
-            <div>
-              <dt>Intent</dt>
-              <dd>Showcase, not clone</dd>
-            </div>
-          </dl>
-        </aside>
-      </section>
-
       <section id="demo" class="demo-section">
         <div class="section-heading">
-          <p class="eyebrow">Interactive sample wall</p>
-          <h2>Switch between conversion examples</h2>
-          <p>
-            This is a static demonstration. The presets below swap curated HTML and Markdown pairs
-            so visitors can understand the converter behavior quickly.
-          </p>
+          <p class="eyebrow">Converter</p>
+          <h2>Convert HTML to Markdown</h2>
+          <p>Paste HTML, load an `.html` file, or start from one of the examples below.</p>
         </div>
 
         <div class="preset-bar" id="preset-bar">
@@ -90,9 +47,17 @@
           <article class="panel panel-input">
             <div class="panel-head">
               <h3>HTML Input</h3>
-              <button type="button" class="mini-button" id="copy-html">Copy</button>
+              <div class="panel-actions">
+                <label class="mini-button upload-button" for="file-input">Upload</label>
+                <button type="button" class="mini-button" id="copy-html">Copy</button>
+              </div>
             </div>
+            <input type="file" id="file-input" accept=".html,.htm" hidden>
             <textarea id="html-view" spellcheck="false" aria-label="HTML example"></textarea>
+            <div class="panel-foot">
+              <button type="button" class="convert-button" id="convert-button">Convert to Markdown</button>
+              <p class="helper-text" id="status-text">Client-side conversion using a browser Markdown transformer.</p>
+            </div>
           </article>
 
           <article class="panel panel-output">
